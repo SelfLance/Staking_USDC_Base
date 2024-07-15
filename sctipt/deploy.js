@@ -1,19 +1,19 @@
 const hre = require("hardhat");
 
 async function main() {
-  // Get the contract factories
-  //   const [deployer] = await hre.ethers.getSigners();
-  //   let deployer = "0x1640fc5781B960400b9B0cAE7Cd72b21B2E246e7";
-  //   const WETH = await hre.ethers.getContractFactory("MockWETH");
-  // const ERC20Token = await hre.ethers.getContractFactory("ERC20Token");
+  const _usdc = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913";
+  const _weth = "0x4200000000000000000000000000000000000006";
+  const _router = "0x4752ba5dbc23f44d87826276bf6fd6b1c372ad24";
+  const _priceFeed = "";
+  const _balancerVault = "";
 
-  //   let routerAddress = "0xE7C6301109bBc3C75127c6EDaFE78CcF822D81AE";
-  // const erc20 = await ERC20Token.deploy();
-  // console.log("Token Deployed To: ", erc20.target);
-
-  const Staking = await hre.ethers.getContractFactory("Profitmaxpresale");
+  const Staking = await hre.ethers.getContractFactory("PointAMM");
   const stake = await Staking.deploy(
-    "0x5C2Db6D26D5A86392777368bFED9A8f1afC87A4F"
+    _usdc,
+    _weth,
+    _router,
+    _priceFeed,
+    _balancerVault
   );
 
   console.log("Staking Contract deployed to:", stake.target);

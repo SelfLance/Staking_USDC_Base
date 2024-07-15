@@ -4,9 +4,10 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
-import "./IRouter02.sol";
-import "./IBalancerFlashLoan.sol";
+// import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+import "./interfaces/AggregatorV3Interface.sol";
+import "./interfaces/IUniswapV2Router02.sol";
+import "./interfaces/IBalancerVault.sol";
 
 contract PointAMM is Ownable, AccessControl {
     uint256 constant SCALING_FACTOR = 10 ** 18;
@@ -16,9 +17,9 @@ contract PointAMM is Ownable, AccessControl {
 
     IERC20 public USDC;
     IERC20 public WETH;
-    IRouter02 public router;
+    IUniswapV2Router02 public router;
     AggregatorV3Interface internal priceFeed;
-    IBalancerFlashLoan public balancerVault;
+    IBalancerVault public balancerVault;
 
     uint256 public minProfit = 100 * 10 ** 6; // 100 USDC
     uint256 public deadlineBlock;
@@ -43,9 +44,9 @@ contract PointAMM is Ownable, AccessControl {
 
         USDC = IERC20(_usdc);
         WETH = IERC20(_weth);
-        router = IRouter02(_router);
+        router = IUniswapV2Router02(_router);
         priceFeed = AggregatorV3Interface(_priceFeed);
-        balancerVault = IBalancerFlashLoan(_balancerVault);
+        balancerVault = IBalancerVault(_balancerVault);
 
         _grantRole(ADMIN_ROLE, msg.sender);
         deadlineBlock = block.number + 5760; // Approx. 1 day (assuming 15s blocks)
@@ -93,8 +94,8 @@ contract PointAMM is Ownable, AccessControl {
         require(amount > 0, "Amount must be greater than 0");
         emit Debug("Requirements passed, preparing flash loan");
 
-        address[] memory tokens = new address[](1);
-        tokens[0] = address(USDC);
+        IERC20[] memory tokens; //= new address[](1);
+        tokens[0] = USDC;
 
         uint256[] memory amounts = new uint256[](1);
         amounts[0] = amount;
