@@ -4,8 +4,8 @@ async function main() {
   const _usdc = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913";
   const _weth = "0x4200000000000000000000000000000000000006";
   const _router = "0x4752ba5dbc23f44d87826276bf6fd6b1c372ad24";
-  const _priceFeed = "";
-  const _balancerVault = "";
+  const _priceFeed = "0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70"; // Eth USD Price Feed Address
+  const _balancerVault = "0xBA12222222228d8Ba445958a75a0704d566BF2C8";
 
   const Staking = await hre.ethers.getContractFactory("PointAMM");
   const stake = await Staking.deploy(
